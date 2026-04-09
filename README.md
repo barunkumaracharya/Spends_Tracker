@@ -15,6 +15,17 @@ Example spoken commands:
 - `I spent 300 rupees on food today on swiggy`
 - `yesterday, I spent 20 rupees on chocolate`
 - `I paid 450 rupees for groceries at dmart`
+- `i today i spent ten rupees them chocolate` (now works with semantic parsing!)
+- `I spent 500 rupees buying a bicycle` (new categories accepted!)
+
+## Features
+
+- **Semantic NLP Parsing**: Uses spaCy for intelligent understanding of noisy speech input
+- **Better Speech Recognition**: OpenAI Whisper for improved accuracy with accented speech
+- **Flexible Categories**: Accepts new categories not in the predefined vocabulary (e.g., "bicycle", "gaming")
+- **Offline Operation**: No internet required for speech recognition or parsing
+- **Vocabulary Correction**: SymSpell-based correction for domain-specific terms
+- **Multi-transaction Support**: Can parse multiple transactions from a single utterance
 
 ## 1) Setup
 
@@ -25,14 +36,11 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-## 2) Download Vosk model (best Indian English option)
+## 2) Download spaCy Language Model
 
-Download an English model from [Vosk models](https://alphacephei.com/vosk/models) and extract to:
-
-`d:\github\voice_ledger_app\models\vosk-model-en-in-0.5`
-
-You can change this path in `src/config.py`.
-This model is tuned for Indian English and is larger than small models, so it uses more RAM/CPU.
+```powershell
+python -m spacy download en_core_web_sm
+```
 
 ## 3) Run
 

@@ -9,11 +9,23 @@ import pystray
 from PIL import Image, ImageDraw
 
 from .audio_listener import AudioListener
-from .config import DB_PATH, EXPORT_DIR, PAUSE_JOIN_SECONDS, VOSK_MODEL_DIR
+from .config import (
+    DB_PATH,
+    EXPORT_DIR,
+    PARSER_ENGINE,
+    PAUSE_JOIN_SECONDS,
+    SPACY_NLU_ENABLED,
+    STT_ENGINE,
+    VOSK_MODEL_DIR,
+    WHISPER_DEVICE,
+    WHISPER_MODEL_SIZE,
+)
 from .exporter import export_month_excel
 from .ledger_store import LedgerStore
 from .stt_vosk import VoskEngine
+from .stt_whisper import WhisperEngine
 from .transaction_parser import has_transaction_intent, parse_transactions
+from .rasa_parser import SpacyTransactionParser
 
 
 def _build_icon() -> Image.Image:
@@ -29,13 +41,41 @@ def _build_icon() -> Image.Image:
 class TrayVoiceLedgerApp:
     def __init__(self):
         self.store = LedgerStore(DB_PATH)
-        self.stt = VoskEngine(VOSK_MODEL_DIR, sample_rate=16_000)
+        
+        # Initialize STT engine
+        if STT_ENGINE == "whisper":
+            logging.info("Using Whisper STT engine")
+            self.stt = WhisperEngine(
+                model_size=WHISPER_MODEL_SIZE,
+                device=WHISPER_DEVICE
+            )
+        else:
+            logging.info("Using Vosk STT engine")
+            self.stt = VoskEngine(VOSK_MODEL_DIR, sample_rate=16_000)
+        
+        # Initialize parser engine
+        if PARSER_ENGINE == "spacy":
+            logging.info("Using spaCy semantic parser")
+            try:
+                self.parser = SpacyTransactionParser()
+            except OSError as e:
+                logging.error("spaCy model not available: %s", e)
+                raise
+        else:
+            logging.info("Using regex-based parser")
+            self.parser = None  # Will use regex parser (legacy)
+        
         self.listener = AudioListener(self.stt, on_text=self._handle_recognized_text)
         self.icon: pystray.Icon | None = None
         self._pending_text = ""
         self._pending_time = 0.0
 
     def _handle_recognized_text(self, text: str) -> None:
+        normalized = text.strip().lower()
+        if not normalized.startswith("hello"):
+            if not (self._pending_text and self._pending_text.lower().strip().startswith("hello")):
+                return
+
         if not has_transaction_intent(text):
             return
         logging.info("Transaction-intent transcript: %s", text)
@@ -46,7 +86,12 @@ class TrayVoiceLedgerApp:
         else:
             candidate_text = text.strip()
 
-        parsed_transactions = parse_transactions(candidate_text)
+        # Parse using configured engine
+        if PARSER_ENGINE == "spacy":
+            parsed_transactions = self.parser.parse_transactions(candidate_text)
+        else:
+            parsed_transactions = parse_transactions(candidate_text)
+        
         if not parsed_transactions:
             # Keep candidate briefly so a follow-up chunk after a short pause can complete it.
             self._pending_text = candidate_text

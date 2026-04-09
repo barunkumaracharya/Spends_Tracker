@@ -6,9 +6,28 @@ LOG_DIR = ROOT_DIR / "logs"
 # Export all ledgers to the project exports directory.
 EXPORT_DIR = ROOT_DIR / "exports"
 DB_PATH = ROOT_DIR / "ledger.db"
-# Best available Indian English offline model.
+
+# Speech-to-Text Configuration
+# Options: "vosk" or "whisper"
+STT_ENGINE = "whisper"  # Recommended: "whisper" for better accuracy
+
+# For Vosk (legacy)
 VOSK_MODEL_DIR = ROOT_DIR / "models" / "vosk-model-en-in-0.5"
 
+# For Whisper
+WHISPER_MODEL_SIZE = "base"  # Options: "tiny", "base", "small", "medium", "large"
+WHISPER_DEVICE = "cpu"  # Options: "cpu" or "cuda" (nvidia GPU)
+WHISPER_LANGUAGE = "en"
+
+# Transaction Parser Configuration
+# Options: "regex" or "spacy"
+PARSER_ENGINE = "spacy"  # Recommended: "spacy" for semantic understanding
+
+# For spaCy NLU (no training required - uses spacy pre-trained model)
+# Clear this config if moving back to regex
+SPACY_NLU_ENABLED = True
+
+# Audio Settings
 SAMPLE_RATE = 16_000
 CHANNELS = 1
 BLOCKSIZE = 8_000
@@ -64,6 +83,8 @@ DOMAIN_VOCABULARY = [
     "tuition",
     "shopping",
     "clothes",
+    "clothing",
+    "shoes",
     "electronics",
     "bills",
     "electricity",

@@ -1,0 +1,55 @@
+version: "3.0"
+
+nlu:
+- intent: transaction
+  examples: |
+    - i spent [10](amount) rupees on [food](category) today
+    - i spent [300](amount) rupees on [food](category)
+    - i spent [20](amount) rupees on [chocolate](category) yesterday
+    - i paid [450](amount) rupees for [groceries](category) at [dmart](merchant)
+    - i bought [100](amount) rupees of [snacks](category) from [swiggy](merchant)
+    - i spent [5000](amount) rupees on [shopping](category)
+    - spent [500](amount) rupees on [clothing](category)
+    - spent [six thousand](amount) rupees on [shoes](category) on january nine
+    - i spent [four hundred](amount) rupees on [swiggy](merchant) yesterday
+    - i spent [six hundred](amount) rupees on [biryani](category) day before yesterday
+    - spent [two hundred](amount) rupees yesterday on [food](category)
+    - spent [five hundred](amount) rupees on [clothing](category)
+    - spent [six thousand](amount) rupees on [shoes](category) in january
+    - i spent [ten](amount) rupees on [chocolate](category) today
+    - i spent [200](amount) rupees for [rent](category)
+    - spent [1000](amount) on [electricity](category) bills
+    - paid [500](amount) for [medical](category) fees
+    - bought [2000](amount) worth of [groceries](category)
+    - spent [150](amount) at [uber](merchant) for travel
+    - spent [80](amount) on [coffee](category) and [tea](category)
+    - purchased [300](amount) of [medicine](category)
+    - i paid [600](amount) rupees on [fuel](category)
+    - yesterday i bought [400](amount) of [pizza](category)
+    - i spent [100](amount) on [metro](category) ticket
+    - spent [500](amount) for [college fees](category)
+    - bought [2500](amount) worth of [electronics](category)
+    - spent [75](amount) on [coffee](category)
+    - paid [1500](amount) for [internet](category) bill
+    - spent [200](amount) on [movie](category) tickets
+    - bought [300](amount) of [snacks](category) at [blinkit](merchant)
+    - spent [5000](amount) on [shopping](category) clothes
+    - i paid [300](amount) rupees on [lunch](category)
+    - spent [150](amount) on [breakfast](category)
+    - bought [400](amount) of [burger](category)
+    - spent [250](amount) on [taxi](category) fare
+    - paid [800](amount) for [tuition](category) fees
+    - spent [600](amount) on [train](category) ticket
+    - bought [350](amount) of [wrap](category) from [swiggy](merchant)
+    - spent [500](amount) on [bus](category) pass
+    - paid [1200](amount) for [college fees](category) today
+
+- intent: nlu_fallback
+  examples: |
+    - hello
+    - hi
+    - what is the weather
+    - how are you
+    - tell me a joke
+    - what time is it
+    - this is not a transaction

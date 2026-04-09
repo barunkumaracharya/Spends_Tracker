@@ -19,11 +19,15 @@ class ParsedTransaction:
     extra_tags: str
 
 
-AMOUNT_PATTERN = re.compile(r"(?P<amount>\d+(?:\.\d+)?)\s*(?:rupees?|rs\.?|inr)?", re.IGNORECASE)
+AMOUNT_PATTERN = re.compile(r"(?P<amount>\d+(?:,\d{3})*(?:\.\d+)?)\s*(?:rupees?|rs\.?|inr)?", re.IGNORECASE)
 WORD_AMOUNT_NEAR_CURRENCY_PATTERN = re.compile(
     r"(?P<amount_words>(?:[a-zA-Z]+[\s-]+){0,7}[a-zA-Z]+)\s*(?:rupees?|rs\.?|inr)\b",
     re.IGNORECASE,
 )
+
+
+def _normalize_amount_text(amount_text: str) -> str:
+    return amount_text.replace(",", "").strip()
 ON_SEGMENT_PATTERN = re.compile(r"\bon\s+([a-zA-Z][a-zA-Z0-9_-]*)", re.IGNORECASE)
 FOR_SEGMENT_PATTERN = re.compile(r"\bfor\s+([a-zA-Z][a-zA-Z0-9_-]*)", re.IGNORECASE)
 AT_SEGMENT_PATTERN = re.compile(r"\bat\s+([a-zA-Z][a-zA-Z0-9_-]*)", re.IGNORECASE)
@@ -222,7 +226,7 @@ def parse_transaction(command_text: str, now: datetime | None = None) -> ParsedT
 
     amount_match = AMOUNT_PATTERN.search(cleaned)
     if amount_match:
-        amount = float(amount_match.group("amount"))
+        amount = float(_normalize_amount_text(amount_match.group("amount")))
     else:
         words_match = WORD_AMOUNT_NEAR_CURRENCY_PATTERN.search(cleaned)
         amount_source = words_match.group("amount_words") if words_match else cleaned
