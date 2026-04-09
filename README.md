@@ -1,5 +1,7 @@
 # Voice Ledger (Windows 10 Tray App)
 
+Voice Ledger is a convenient tool for tracking daily expenses through voice commands, eliminating the need for manual entry and making expense recording effortless. Perfect for people who want to record spending statements just by speaking instead of sitting and manually writing daily spends.
+
 This app continuously listens on microphone input and records transaction-intent speech.
 It captures lines containing spending verbs (for example: `spent`, `spend`, `paid`, `bought`, `purchased`) and parses them as transactions.
 It also applies offline vocabulary correction (SymSpell) for common recognition mistakes in categories/merchant tags.
@@ -57,6 +59,8 @@ It also tries to join nearby speech chunks (short pauses) before parsing, to imp
 ## Demo
 
 Watch the screen recording of the app in action: [demo.mp4](demo.mp4)
+
+YouTube Demo: [Watch on YouTube](https://youtu.be/s6y88pjANvk)
 
 ## 4) Export monthly Excel
 
