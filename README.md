@@ -5,6 +5,8 @@ It captures lines containing spending verbs (for example: `spent`, `spend`, `pai
 It also applies offline vocabulary correction (SymSpell) for common recognition mistakes in categories/merchant tags.
 You can edit the correction dictionary in `src/config.py` under `DOMAIN_VOCABULARY`.
 
+**Important**: Transactions must start with "hello" to be recorded. Speech not starting with "hello" is ignored to prevent accidental recordings.
+
 It semantically extracts and stores exactly 4 columns per transaction:
 - `date`
 - `transaction_amount`
@@ -12,11 +14,11 @@ It semantically extracts and stores exactly 4 columns per transaction:
 - `extra_tags`
 
 Example spoken commands:
-- `I spent 300 rupees on food today on swiggy`
-- `yesterday, I spent 20 rupees on chocolate`
-- `I paid 450 rupees for groceries at dmart`
-- `i today i spent ten rupees them chocolate` (now works with semantic parsing!)
-- `I spent 500 rupees buying a bicycle` (new categories accepted!)
+- `hello, I spent 300 rupees on food today on swiggy`
+- `hello yesterday, I spent 20 rupees on chocolate`
+- `hello, I paid 450 rupees for groceries at dmart`
+- `hello i today i spent ten rupees them chocolate` (now works with semantic parsing!)
+- `hello, I spent 500 rupees buying a bicycle` (new categories accepted!)
 
 ## Features
 
@@ -51,6 +53,10 @@ cd d:\github\voice_ledger_app
 
 The app starts as a system tray icon and keeps running until you click `Exit`.
 It also tries to join nearby speech chunks (short pauses) before parsing, to improve recognition of interrupted sentences.
+
+## Demo
+
+Watch the screen recording of the app in action: [demo.mp4](demo.mp4)
 
 ## 4) Export monthly Excel
 
