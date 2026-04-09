@@ -1,0 +1,8 @@
+vosk
+sounddevice
+pystray
+Pillow
+dateparser
+pytest
+openpyxl
+symspellpy

@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+*.pyc
+dist/
+build/
+models/
+*.spec
+logs/*.log
+exports/*.csv
+ledger.db
